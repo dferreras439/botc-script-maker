@@ -58,11 +58,30 @@
         <div class="script-container">
             <div class="script-header">
                 <h2>Trouble Brewing</h2>
-                <p>A standard 22-role script for Blood on the Clocktower. Perfect for beginners and experienced players alike.</p>
+                <p>A standard 22-role script for Blood on the Clocktower</p>
             </div>
             
-            <div class="roles-grid" id="roles-grid">
-                <!-- Role cards will be dynamically inserted here -->
+            <!-- Team Sections -->
+            <div class="team-grid">
+                <div class="team-section" id="townsfolk-section">
+                    <h3 class="team-title">Townsfolk</h3>
+                    <div class="team-roles" id="townsfolk-roles"></div>
+                </div>
+                
+                <div class="team-section" id="outsider-section">
+                    <h3 class="team-title">Outsiders</h3>
+                    <div class="team-roles" id="outsider-roles"></div>
+                </div>
+                
+                <div class="team-section" id="minion-section">
+                    <h3 class="team-title">Minions</h3>
+                    <div class="team-roles" id="minion-roles"></div>
+                </div>
+                
+                <div class="team-section" id="demon-section">
+                    <h3 class="team-title">Demons</h3>
+                    <div class="team-roles" id="demon-roles"></div>
+                </div>
             </div>
         </div>
         
@@ -71,142 +90,6 @@
         </footer>
     </div>
     
-    <script>
-        // Icon mapping remains the same as hardcoded version
-        const roleIcons = {
-            washerwoman: "👚",
-            librarian: "📚",
-            investigator: "🔍",
-            chef: "👨‍🍳",
-            empath: "💖",
-            fortune_teller: "🔮",
-            undertaker: "⚰️",
-            monk: "🧘",
-            ravenkeeper: "🐦",
-            virgin: "💃",
-            slayer: "🏹",
-            soldier: "🪖",
-            mayor: "🎖️",
-            butler: "🧑‍🍳",
-            drunk: "🍺",
-            recluse: "🏚️",
-            saint: "😇",
-            poisoner: "🧪",
-            spy: "🕵️",
-            scarlet_woman: "💃",
-            baron: "🎩",
-            imp: "😈"
-        };
-        
-        // DOM Elements
-        const roleJsonTextarea = document.getElementById('role-json');
-        const generateBtn = document.getElementById('generate-btn');
-        const printBtn = document.getElementById('print-btn');
-        const saveBtn = document.getElementById('save-btn');
-        const rolesGrid = document.getElementById('roles-grid');
-        
-        // Fetch role data from JSON file
-        async function loadRoleData() {
-            try {
-                const response = await fetch('roles/roles.json');
-                const roles = await response.json();
-                
-                // Convert array into lookup dictionary
-                return roles.reduce((map, role) => {
-                    map[role.id] = {
-                        ...role,
-                        type: role.team  // Map "team" to "type" for compatibility
-                    };
-                    return map;
-                }, {});
-            } catch (error) {
-                console.error('Error loading role data:', error);
-                return {};
-            }
-        }
-        
-        // Generate role cards
-        async function generateRoleCards() {
-            try {
-                // Clear existing cards
-                rolesGrid.innerHTML = '';
-                
-                // Parse JSON input
-                const roleConfig = JSON.parse(roleJsonTextarea.value);
-                const roleDatabase = await loadRoleData();
-                
-                // Create cards for each role
-                roleConfig.forEach(roleConfig => {
-                    const roleId = roleConfig.id;
-                    const role = roleDatabase[roleId];
-                    const icon = roleIcons[roleId] || "❓";
-                    
-                    if (role) {
-                        const roleCard = document.createElement('div');
-                        roleCard.className = `role-card ${role.type}`;
-                        
-                        roleCard.innerHTML = `
-                            <div class="role-header">
-                                <div class="role-name">${role.name}</div>
-                                <div class="role-type ${role.type}">${role.type.charAt(0).toUpperCase() + role.type.slice(1)}</div>
-                            </div>
-                            <div class="role-ability">${role.ability}</div>
-                            <div class="role-icon">${icon}</div>
-                        `;
-                        
-                        rolesGrid.appendChild(roleCard);
-                    } else {
-                        // Fallback for unknown roles
-                        const errorCard = document.createElement('div');
-                        errorCard.className = 'role-card';
-                        errorCard.innerHTML = `
-                            <div class="role-header">
-                                <div class="role-name">Error: ${roleId}</div>
-                                <div class="role-type">Unknown</div>
-                            </div>
-                            <div class="role-ability">Role not found in database</div>
-                            <div class="role-icon">❌</div>
-                        `;
-                        rolesGrid.appendChild(errorCard);
-                    }
-                });
-                
-                // Fill remaining slots with empty cards
-                const remainingSlots = 22 - roleConfig.length;
-                for (let i = 0; i < remainingSlots; i++) {
-                    const emptyCard = document.createElement('div');
-                    emptyCard.className = 'role-card';
-                    emptyCard.innerHTML = `
-                        <div class="role-header">
-                            <div class="role-name">Empty Slot</div>
-                            <div class="role-type">Add Role</div>
-                        </div>
-                        <div class="role-ability">Add a role ID to the JSON to display it here</div>
-                        <div class="role-icon">❓</div>
-                    `;
-                    rolesGrid.appendChild(emptyCard);
-                }
-            } catch (error) {
-                alert('Invalid JSON format. Please check your input.');
-                console.error(error);
-            }
-        }
-        
-        // Event Listeners
-        generateBtn.addEventListener('click', generateRoleCards);
-        printBtn.addEventListener('click', () => window.print());
-        saveBtn.addEventListener('click', () => {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(roleJsonTextarea.value);
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "botc-script.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        });
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', generateRoleCards);
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>

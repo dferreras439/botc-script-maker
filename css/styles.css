@@ -1,5 +1,3 @@
-
-/* Structural Styles Only - No Theming */
 * {
     margin: 0;
     padding: 0;
@@ -11,9 +9,9 @@ body {
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
+    background: #f0f0f0;
 }
 
-/* Header Styles */
 header {
     position: fixed;
     top: 0;
@@ -24,6 +22,8 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
 }
 
 .logo {
@@ -33,7 +33,9 @@ header {
 }
 
 .logo h1 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: 600;
 }
 
 .controls {
@@ -42,25 +44,37 @@ header {
 }
 
 .btn {
-    border: 1px solid #ccc;
-    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    padding: 8px 16px;
+    border-radius: 4px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: all 0.2s ease;
 }
 
-/* Sidebar Styles */
+.btn:hover {
+    background: #eee;
+}
+
+.btn i {
+    font-size: 1rem;
+}
+
 .sidebar {
     width: 320px;
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
     overflow-y: auto;
     z-index: 101;
+    background: #fff;
+    border-right: 1px solid #ddd;
 }
 
 .sidebar-title {
@@ -69,6 +83,12 @@ header {
     gap: 10px;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar-title h2 {
+    font-size: 1.3rem;
+    color: #333;
 }
 
 .input-group {
@@ -79,26 +99,31 @@ header {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
+    color: #555;
 }
 
 .input-group textarea {
     width: 100%;
-    height: 120px;
+    height: 180px;
     border: 1px solid #ddd;
+    border-radius: 4px;
     padding: 12px;
     font-family: monospace;
     font-size: 0.9rem;
     resize: vertical;
+    background: #f9f9f9;
 }
 
 .instructions {
     padding: 12px;
     margin-top: 1.5rem;
     font-size: 0.9rem;
+    border: 1px solid #eee;
 }
 
 .instructions h3 {
     margin-bottom: 8px;
+    color: #444;
 }
 
 .instructions ul {
@@ -108,97 +133,139 @@ header {
 .instructions li {
     margin-bottom: 6px;
     line-height: 1.4;
+    color: #555;
 }
 
-/* Main Content Styles */
 .main-content {
     flex: 1;
     margin-left: 320px;
-    padding: 100px 2rem 2rem;
+    padding: 80px 2rem 2rem;
 }
 
 .script-container {
-    padding: 2rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #ddd;
 }
 
 .script-header {
     text-align: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
 }
 
 .script-header h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+    color: #333;
 }
 
 .script-header p {
     max-width: 600px;
     margin: 0 auto;
+    color: #666;
 }
 
-.roles-grid {
+.team-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.team-section {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+    background: #fafafa;
+}
+
+.team-title {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    color: #444;
+}
+
+.team-roles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
 .role-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 180px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
-.role-header {
+.card-image {
+    width: 60px;
+    height: 60px;
+    background: #222;
+    flex-shrink: 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eee;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.card-content {
+    flex: 1;
 }
 
 .role-name {
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-.role-type {
-    font-size: 0.9rem;
-    padding: 4px 10px;
-    border-radius: 30px;
+    font-size: 1.1rem;
     font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
 }
 
 .role-ability {
-    flex: 1;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: #555;
 }
 
-.role-icon {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-top: 10px;
+#townsfolk-section .card-image {
+    background: #1a5276;
 }
 
-/* Footer */
+#outsider-section .card-image {
+    background: #27ae60;
+}
+
+#minion-section .card-image {
+    background: #c0392b;
+}
+
+#demon-section .card-image {
+    background: #8e44ad;
+}
+
 footer {
     text-align: center;
     margin-top: 3rem;
     padding: 1.5rem;
     border-top: 1px solid #eee;
     font-size: 0.9rem;
+    color: #666;
 }
 
-/* Print Styles */
 @media print {
-    body {
-        color: black;
-    }
-    
+    /* Print styles remain similar */
     .sidebar, .btn, .logo i, footer {
         display: none;
     }
@@ -209,45 +276,48 @@ footer {
     }
     
     .script-container {
+        box-shadow: none;
+        border: none;
         padding: 0;
-    }
-    
-    .role-card {
-        border: 1px solid #000;
-    }
-    
-    .role-ability {
-        color: #333;
     }
 }
 
 /* Responsive */
 @media (max-width: 900px) {
-    .roles-grid {
+    .team-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .team-roles {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
 }
 
 @media (max-width: 768px) {
     .sidebar {
         width: 280px;
-        padding: 1.5rem 1rem;
     }
     
     header {
-        padding: 1rem;
         left: 280px;
+        padding: 1rem;
     }
     
     .logo h1 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
     
     .btn span {
         display: none;
     }
     
-    .btn i {
-        font-size: 1.4rem;
+    .btn {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .team-roles {
+        grid-template-columns: 1fr;
     }
 }
