@@ -1,13 +1,685 @@
-<div class="sidebar">
-  <h2>Script Builder</h2>
-  <div id="role-filters">
-    <button data-team="townsfolk">Townsfolk</button>
-    <button data-team="outsider">Outsiders</button>
-    <button data-team="minion">Minions</button>
-    <button data-team="demon">Demons</button>
-  </div>
-  <div id="role-list">
-    <!-- Dynamically populated with roles from roles.json -->
-  </div>
-  <button id="print-btn">Print Script</button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BotC Script Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #8B0000;
+            --secondary: #4B0082;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --townsfolk: #3498db;
+            --outsider: #2ecc71;
+            --minion: #e74c3c;
+            --demon: #9b59b6;
+            --sidebar-width: 320px;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            background: rgba(26, 26, 46, 0.9);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--secondary);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .logo i {
+            color: #ff7e5f;
+            font-size: 2rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(26, 26, 46, 0.95);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 1.5rem;
+            border-right: 1px solid var(--secondary);
+            overflow-y: auto;
+            z-index: 101;
+        }
+        
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-title h2 {
+            font-size: 1.5rem;
+            color: #ff7e5f;
+        }
+        
+        .sidebar-title i {
+            font-size: 1.8rem;
+            color: #ff7e5f;
+        }
+        
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #feb47b;
+        }
+        
+        .input-group textarea {
+            width: 100%;
+            height: 120px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-family: monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+        
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.3);
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--townsfolk);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .instructions h3 {
+            color: #feb47b;
+            margin-bottom: 8px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 100px 2rem 2rem;
+        }
+        
+        .script-container {
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--secondary);
+        }
+        
+        .script-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .script-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #ff7e5f;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .script-header p {
+            color: #aaa;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .role-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 180px;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .role-card.townsfolk {
+            border-left: 4px solid var(--townsfolk);
+        }
+        
+        .role-card.outsider {
+            border-left: 4px solid var(--outsider);
+        }
+        
+        .role-card.minion {
+            border-left: 4px solid var(--minion);
+        }
+        
+        .role-card.demon {
+            border-left: 4px solid var(--demon);
+        }
+        
+        .role-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .role-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .role-type {
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .role-type.townsfolk {
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--townsfolk);
+        }
+        
+        .role-type.outsider {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--outsider);
+        }
+        
+        .role-type.minion {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--minion);
+        }
+        
+        .role-type.demon {
+            background: rgba(155, 89, 182, 0.2);
+            color: var(--demon);
+        }
+        
+        .role-ability {
+            flex: 1;
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        .role-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .sidebar, .btn, .logo i, footer {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 0;
+            }
+            
+            .script-container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+            
+            .script-header {
+                text-align: center;
+                margin-top: 1rem;
+            }
+            
+            .script-header h2 {
+                color: black;
+            }
+            
+            .role-card {
+                background: white;
+                color: black;
+                border: 1px solid #ddd;
+                box-shadow: none;
+            }
+            
+            .role-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .role-ability {
+                color: #333;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+            
+            .sidebar {
+                padding: 1.5rem 1rem;
+            }
+            
+            header {
+                padding: 1rem;
+                left: var(--sidebar-width);
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn span {
+                display: none;
+            }
+            
+            .btn i {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-title">
+            <i class="fas fa-cogs"></i>
+            <h2>Script Builder</h2>
+        </div>
+        
+        <div class="input-group">
+            <label for="role-json">Role JSON Configuration:</label>
+            <textarea id="role-json" spellcheck="false">[{"id":"washerwoman"},{"id":"librarian"},{"id":"investigator"},{"id":"chef"},{"id":"empath"},{"id":"fortune_teller"},{"id":"undertaker"},{"id":"monk"},{"id":"ravenkeeper"},{"id":"virgin"},{"id":"slayer"},{"id":"soldier"},{"id":"mayor"},{"id":"butler"},{"id":"drunk"},{"id":"recluse"},{"id":"saint"},{"id":"poisoner"},{"id":"spy"},{"id":"scarlet_woman"},{"id":"baron"},{"id":"imp"}]</textarea>
+        </div>
+        
+        <button id="generate-btn" class="btn">
+            <i class="fas fa-bolt"></i>
+            <span>Generate Script</span>
+        </button>
+        
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <ul>
+                <li>Enter role IDs in JSON format in the textarea</li>
+                <li>Click "Generate Script" to create your script</li>
+                <li>Roles will appear in the main grid area</li>
+                <li>Use your browser's print function to print the script</li>
+            </ul>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <div class="logo">
+                <i class="fas fa-moon"></i>
+                <h1>Blood on the Clocktower Script Builder</h1>
+            </div>
+            <div class="controls">
+                <button class="btn" id="print-btn">
+                    <i class="fas fa-print"></i>
+                    <span>Print Script</span>
+                </button>
+                <button class="btn" id="save-btn">
+                    <i class="fas fa-save"></i>
+                    <span>Save Script</span>
+                </button>
+            </div>
+        </header>
+        
+        <div class="script-container">
+            <div class="script-header">
+                <h2>Trouble Brewing</h2>
+                <p>A standard 22-role script for Blood on the Clocktower. Perfect for beginners and experienced players alike.</p>
+            </div>
+            
+            <div class="roles-grid" id="roles-grid">
+                <!-- Role cards will be dynamically inserted here -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>BotC Script Builder &copy; 2023 | This tool is unofficial and not affiliated with The Pandemonium Institute</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Role database
+        const roleDatabase = {
+            washerwoman: {
+                name: "Washerwoman",
+                type: "townsfolk",
+                ability: "You start knowing that 1 of 2 players is a particular Townsfolk.",
+                icon: "👚"
+            },
+            librarian: {
+                name: "Librarian",
+                type: "townsfolk",
+                ability: "You start knowing that 1 of 2 players is a particular Outsider.",
+                icon: "📚"
+            },
+            investigator: {
+                name: "Investigator",
+                type: "townsfolk",
+                ability: "You start knowing that 1 of 2 players is a particular Minion.",
+                icon: "🔍"
+            },
+            chef: {
+                name: "Chef",
+                type: "townsfolk",
+                ability: "You start knowing how many pairs of evil players are sitting adjacent to each other.",
+                icon: "👨‍🍳"
+            },
+            empath: {
+                name: "Empath",
+                type: "townsfolk",
+                ability: "Each night, you learn how many of your 2 alive neighbors are evil.",
+                icon: "💖"
+            },
+            fortune_teller: {
+                name: "Fortune Teller",
+                type: "townsfolk",
+                ability: "Each night, choose 2 players: you learn if either is a Demon. There is a good player that registers as a Demon to you.",
+                icon: "🔮"
+            },
+            undertaker: {
+                name: "Undertaker",
+                type: "townsfolk",
+                ability: "Each night*, you learn which character died by execution today.",
+                icon: "⚰️"
+            },
+            monk: {
+                name: "Monk",
+                type: "townsfolk",
+                ability: "Each night*, choose a player (not yourself): they are safe from the Demon tonight.",
+                icon: "🧘"
+            },
+            ravenkeeper: {
+                name: "Ravenkeeper",
+                type: "townsfolk",
+                ability: "If you die at night, you are woken to choose a player: you learn their character.",
+                icon: "🐦"
+            },
+            virgin: {
+                name: "Virgin",
+                type: "townsfolk",
+                ability: "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
+                icon: "💃"
+            },
+            slayer: {
+                name: "Slayer",
+                type: "townsfolk",
+                ability: "Once per game, during the day, publicly choose a player: if they are the Demon, they die.",
+                icon: "🏹"
+            },
+            soldier: {
+                name: "Soldier",
+                type: "townsfolk",
+                ability: "You are safe from the Demon.",
+                icon: "🪖"
+            },
+            mayor: {
+                name: "Mayor",
+                type: "townsfolk",
+                ability: "If only 3 players live & no execution occurs, your team wins. If you die at night, 1 player might die instead.",
+                icon: "🎖️"
+            },
+            butler: {
+                name: "Butler",
+                type: "outsider",
+                ability: "Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting.",
+                icon: "🧑‍🍳"
+            },
+            drunk: {
+                name: "Drunk",
+                type: "outsider",
+                ability: "You think you are a Townsfolk, but you are not. You do not know this, and your ability malfunctions.",
+                icon: "🍺"
+            },
+            recluse: {
+                name: "Recluse",
+                type: "outsider",
+                ability: "You might register as evil & as a Minion or Demon, even if dead.",
+                icon: "🏚️"
+            },
+            saint: {
+                name: "Saint",
+                type: "outsider",
+                ability: "If you die by execution, evil wins.",
+                icon: "😇"
+            },
+            poisoner: {
+                name: "Poisoner",
+                type: "minion",
+                ability: "Each night, choose a player: they are poisoned tonight and tomorrow day.",
+                icon: "🧪"
+            },
+            spy: {
+                name: "Spy",
+                type: "minion",
+                ability: "Each night, you see the Grimoire. You might register as good & as a Townsfolk or Outsider, even if dead.",
+                icon: "🕵️"
+            },
+            scarlet_woman: {
+                name: "Scarlet Woman",
+                type: "minion",
+                ability: "If there are 5 or more players alive and the Demon dies, you become the Demon.",
+                icon: "💃"
+            },
+            baron: {
+                name: "Baron",
+                type: "minion",
+                ability: "There are extra Outsiders in play. [-1 or +2 Outsiders]",
+                icon: "🎩"
+            },
+            imp: {
+                name: "Imp",
+                type: "demon",
+                ability: "Each night*, choose a player: they die. If you kill yourself, a Minion becomes the Imp.",
+                icon: "😈"
+            }
+        };
+        
+        // DOM Elements
+        const roleJsonTextarea = document.getElementById('role-json');
+        const generateBtn = document.getElementById('generate-btn');
+        const printBtn = document.getElementById('print-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const rolesGrid = document.getElementById('roles-grid');
+        
+        // Generate role cards
+        function generateRoleCards() {
+            try {
+                // Clear existing cards
+                rolesGrid.innerHTML = '';
+                
+                // Parse JSON input
+                const roleConfig = JSON.parse(roleJsonTextarea.value);
+                
+                // Create cards for each role
+                roleConfig.forEach(roleConfig => {
+                    const roleId = roleConfig.id;
+                    const role = roleDatabase[roleId];
+                    
+                    if (role) {
+                        const roleCard = document.createElement('div');
+                        roleCard.className = `role-card ${role.type}`;
+                        
+                        roleCard.innerHTML = `
+                            <div class="role-header">
+                                <div class="role-name">${role.name}</div>
+                                <div class="role-type ${role.type}">${role.type.charAt(0).toUpperCase() + role.type.slice(1)}</div>
+                            </div>
+                            <div class="role-ability">${role.ability}</div>
+                            <div class="role-icon">${role.icon}</div>
+                        `;
+                        
+                        rolesGrid.appendChild(roleCard);
+                    }
+                });
+                
+                // Fill remaining slots with empty cards
+                const remainingSlots = 22 - roleConfig.length;
+                for (let i = 0; i < remainingSlots; i++) {
+                    const emptyCard = document.createElement('div');
+                    emptyCard.className = 'role-card';
+                    emptyCard.innerHTML = `
+                        <div class="role-header">
+                            <div class="role-name">Empty Slot</div>
+                            <div class="role-type">Add Role</div>
+                        </div>
+                        <div class="role-ability">Add a role ID to the JSON to display it here</div>
+                        <div class="role-icon">❓</div>
+                    `;
+                    rolesGrid.appendChild(emptyCard);
+                }
+            } catch (error) {
+                alert('Invalid JSON format. Please check your input.');
+                console.error(error);
+            }
+        }
+        
+        // Event Listeners
+        generateBtn.addEventListener('click', generateRoleCards);
+        printBtn.addEventListener('click', () => window.print());
+        saveBtn.addEventListener('click', () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(roleJsonTextarea.value);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "botc-script.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', generateRoleCards);
+    </script>
+</body>
+</html>
