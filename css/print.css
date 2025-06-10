@@ -1,8 +1,98 @@
+/* media-queries.css or a dedicated print.css */
+
 @media print {
-  .sidebar, #print-btn { 
-    display: none; /* Hide non-print elements */
-  }
-  .script-area {
-    width: 100%; /* Full page */
-  }
+    /* --- General Print Resets --- */
+    body {
+        background: #fff !important; /* Ensure white background for print */
+        color: #000 !important;      /* Ensure black text for readability */
+        -webkit-print-color-adjust: exact; /* Crucial for background colors/gradients to print */
+        print-color-adjust: exact;
+    }
+
+    /* --- Universal Border/Outline/Shadow Removal (REINFORCED) --- */
+    /* This targets EVERYTHING to ensure no unwanted lines/boxes */
+    * {
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        outline: none !important; /* <--- ADDED THIS! Most likely culprit */
+        background: none !important; /* Remove all backgrounds unless specifically needed */
+        color: #000 !important; /* Ensure black text */
+    }
+
+    /* --- Hide Unwanted Elements --- */
+    .sidebar,
+    header,
+    footer,
+    .controls,          /* Header controls */
+    .btn,               /* Buttons */
+    .input-group,       /* Form inputs */
+    .instructions       /* Instruction box */
+    {
+        display: none !important; /* Absolutely hide these elements */
+    }
+
+    /* --- Adjust Main Content for Print Layout --- */
+    .main-content {
+        margin-left: 0 !important; /* Main content takes full width */
+        padding: 1rem !important;  /* Adjust padding for print */
+        width: 100% !important;    /* Ensure it spans full width */
+        zoom: 0.9 !important;      /* Zoom out content slightly (adjust as needed) */
+    }
+
+    /* Ensure the red stripe is gone too */
+    .main-content::before {
+        display: none !important;
+    }
+
+    /* For the specific background area if you used Method 2 */
+    .main-content-background-area {
+        background: none !important; /* Remove background from this div for print */
+        padding-bottom: 0 !important;
+    }
+
+    /* --- Re-apply Specific Styles (if text needs them) --- */
+    /* The gradient on script-header h2 (needs to be explicitly re-added due to universal background:none) */
+    .script-header h2 {
+        background: radial-gradient(circle at right,
+                    rgb(68, 114, 196) 0%,
+                    rgb(20, 60, 120) 100%
+                   ) !important;
+        color: transparent !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+    }
+
+    /* Ensure team-title and roles remain visible and structured */
+    .team-section {
+        display: grid; /* Keep grid layout */
+        grid-template-columns: min-content 1fr;
+        grid-gap: 10px; /* Reduce gap slightly for print */
+        align-items: start;
+        margin-bottom: 20px; /* Space between printed team sections */
+    }
+
+    .team-title {
+        writing-mode: vertical-lr;
+        transform: scale(-1); /* Keep the flip */
+        padding: 0 5px !important; /* Adjust padding for print */
+        font-size: 1.2rem !important; /* Adjust font size for print */
+    }
+
+    .team-roles {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; /* Adjust column width for print */
+        gap: 10px !important; /* Adjust gap for print */
+        padding: 10px !important;
+    }
+
+    .role-card {
+        padding: 10px !important; /* Adjust card padding for print */
+        gap: 10px !important;
+    }
+
+    .card-image {
+        width: 50px !important; /* Smaller images for print */
+        height: 50px !important;
+        font-size: 1rem !important;
+    }
 }
