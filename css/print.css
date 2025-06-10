@@ -35,8 +35,8 @@
     /* --- Adjust Main Content for Print Layout --- */
     .main-content {
         margin-left: 0 !important; /* Main content takes full width */
-        padding: 1rem !important;  /* Adjust padding for print */
-        width: 100% !important;    /* Ensure it spans full width */
+        padding: 0 !important;  /* Adjust padding for print */
+        width: 120% !important;    /* Ensure it spans full width */
         zoom: 0.9 !important;      /* Zoom out content slightly (adjust as needed) */
     }
 
@@ -67,71 +67,37 @@
     .team-section {
         display: grid; /* Keep grid layout */
         grid-template-columns: min-content 1fr;
-        grid-gap: 10px; /* Reduce gap slightly for print */
+        grid-gap: 0px; /* Reduce gap slightly for print */
         align-items: start;
-        margin-bottom: 20px; /* Space between printed team sections */
+        margin-bottom: 2px; /* Space between printed team sections */
     }
 
     .team-title {
         writing-mode: vertical-lr;
         transform: scale(-1); /* Keep the flip */
-        padding: 0 5px !important; /* Adjust padding for print */
+        padding: 0 0 !important; /* Adjust padding for print */
         font-size: 1.2rem !important; /* Adjust font size for print */
     }
 
     .team-roles {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; /* Adjust column width for print */
-        gap: 10px !important; /* Adjust gap for print */
-        padding: 10px !important;
+        gap: 0 !important; /* Adjust gap for print */
+        padding: 0 !important;
     }
 
     .role-card {
-        padding: 10px !important; /* Adjust card padding for print */
-        gap: 10px !important;
+        padding: 0 !important; /* Adjust card padding for print */
+        gap: 0 !important;
+        margin-bottom: 10px;
+        margin-right: 10px;
     }
-
+    .role-name {
+        margin-bottom: 0px
+    }
     .card-image {
         width: 50px !important; /* Smaller images for print */
         height: 50px !important;
-        font-size: 1rem !important;
+        font-size: 0 !important;
     }
-}
-
-
-/* media-queries.css */
-
-@media print {
-  /*  Kill any UA or author borders on fieldsets */
-  fieldset,
-  fieldset > legend {
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /*  …and on any custom grid/container you used: */
-  .main-content-background-area,
-  .team-grid,
-  .script-container {
-    border: none !important;
-    box-shadow: none !important;
-  }
-}
-
-@media print {
-  /* If you have this, it forces a break after the header container: */
-  .main-content {
-    page-break-after: auto !important;
-    /* or just remove that rule entirely */
-  }
-
-  /* This keeps the large grid from getting pushed to page 2: */
-  .script-container,
-  .team-grid {
-    /* allow it to split naturally across pages */
-    page-break-inside: auto !important;
-    break-inside: auto !important;      /* for modern browsers */
-  }
 }
 
