@@ -17,7 +17,7 @@
         
         <div class="input-group">
             <label for="role-json">Role JSON Configuration:</label>
-            <textarea id="role-json" spellcheck="false">[{"id":"washerwoman"},{"id":"librarian"},{"id":"investigator"},{"id":"chef"},{"id":"empath"},{"id":"fortune_teller"},{"id":"undertaker"},{"id":"monk"},{"id":"ravenkeeper"},{"id":"virgin"},{"id":"slayer"},{"id":"soldier"},{"id":"mayor"},{"id":"butler"},{"id":"drunk"},{"id":"recluse"},{"id":"saint"},{"id":"poisoner"},{"id":"spy"},{"id":"scarlet_woman"},{"id":"baron"},{"id":"imp"}]</textarea>
+            <textarea id="role-json" spellcheck="false">[{"id":"_meta","author":"The Pandemonium Institute","name":"Trouble Brewing"},"chef","investigator","washerwoman","librarian","empath","fortuneteller","undertaker","monk","slayer","soldier","ravenkeeper","mayor","virgin","butler","drunk","recluse","saint","poisoner","spy","scarletwoman","baron","imp"]</textarea>
         </div>
         
         <button id="generate-btn" class="btn">
@@ -57,11 +57,11 @@
         
         <div class="script-container">
             <div class="script-header">
-                <h2>Trouble Brewing</h2>
-                <p>A standard 22-role script for Blood on the Clocktower</p>
+                <h2 id="script-name">Trouble Brewing</h2>
+                <p id="script-author">A standard script for Blood on the Clocktower - perfect for beginners and experienced players alike.</p>
             </div>
             
-            <!-- Team Sections -->
+            <!-- Vertically stacked team sections -->
             <div class="team-grid">
                 <div class="team-section" id="townsfolk-section">
                     <h3 class="team-title">Townsfolk</h3>

@@ -9,59 +9,8 @@ body {
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
-    background: #f0f0f0;
-}
-
-header {
-    position: fixed;
-    top: 0;
-    left: 320px;
-    right: 0;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 100;
-    background: #fff;
-    border-bottom: 1px solid #ddd;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo h1 {
-    font-size: 1.4rem;
+    background: #f8f9fa;
     color: #333;
-    font-weight: 600;
-}
-
-.controls {
-    display: flex;
-    gap: 15px;
-}
-
-.btn {
-    border: 1px solid #ddd;
-    background: #f8f8f8;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
-}
-
-.btn:hover {
-    background: #eee;
-}
-
-.btn i {
-    font-size: 1rem;
 }
 
 .sidebar {
@@ -74,7 +23,8 @@ header {
     overflow-y: auto;
     z-index: 101;
     background: #fff;
-    border-right: 1px solid #ddd;
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .sidebar-title {
@@ -89,6 +39,7 @@ header {
 .sidebar-title h2 {
     font-size: 1.3rem;
     color: #333;
+    font-weight: 600;
 }
 
 .input-group {
@@ -99,127 +50,189 @@ header {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #555;
+    color: #444;
 }
 
 .input-group textarea {
     width: 100%;
     height: 180px;
     border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 12px;
+    border-radius: 6px;
+    padding: 15px;
     font-family: monospace;
     font-size: 0.9rem;
     resize: vertical;
-    background: #f9f9f9;
+    background: #fff;
+    color: #333;
+}
+
+.btn {
+    background: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s ease;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #3a5a85;
+}
+
+.btn i {
+    font-size: 1.1rem;
 }
 
 .instructions {
-    padding: 12px;
     margin-top: 1.5rem;
+    padding: 15px;
+    border-radius: 6px;
+    background: #f0f7ff;
     font-size: 0.9rem;
-    border: 1px solid #eee;
 }
 
 .instructions h3 {
-    margin-bottom: 8px;
-    color: #444;
+    margin-bottom: 10px;
+    color: #2c5282;
 }
 
 .instructions ul {
-    padding-left: 20px;
+    padding-left: 22px;
 }
 
 .instructions li {
     margin-bottom: 6px;
-    line-height: 1.4;
-    color: #555;
+    line-height: 1.5;
+    color: #4a5568;
 }
 
 .main-content {
     flex: 1;
     margin-left: 320px;
-    padding: 80px 2rem 2rem;
+    padding: 90px 2rem 2rem;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 320px;
+    right: 0;
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
 }
 
 .script-container {
     padding: 1.5rem;
     background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
 .script-header {
     text-align: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
 }
 
 .script-header h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 0.25rem;
-    color: #333;
+    color: #2b6cb0;
 }
 
 .script-header p {
+    font-size: 1.1rem;
+    color: #4a5568;
     max-width: 600px;
     margin: 0 auto;
-    color: #666;
 }
 
 .team-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
     gap: 30px;
-    margin-top: 20px;
 }
 
 .team-section {
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 15px;
-    background: #fafafa;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .team-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    color: #444;
+    font-size: 1.5rem;
+    padding: 15px 20px;
+    background: #edf2f7;
+    color: #2d3748;
+    font-weight: 600;
+    margin: 0;
 }
 
 .team-roles {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 15px;
+    padding: 15px;
 }
 
 .role-card {
     display: flex;
-    align-items: center;
-    gap: 15px;
     padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    background: #f9fafb;
+    border-radius: 6px;
+    gap: 15px;
+    transition: all 0.2s ease;
+}
+
+.role-card:hover {
+    background: #f0f7ff;
 }
 
 .card-image {
-    width: 60px;
-    height: 60px;
-    background: #222;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #4a6fa5 0%, #2c5282 100%);
     flex-shrink: 0;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: white;
     font-weight: bold;
-    font-size: 0.9rem;
-    text-align: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .card-content {
@@ -227,67 +240,27 @@ header {
 }
 
 .role-name {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 6px;
-    color: #333;
+    margin-bottom: 8px;
+    color: #2b6cb0;
 }
 
 .role-ability {
-    font-size: 0.85rem;
-    line-height: 1.4;
-    color: #555;
-}
-
-#townsfolk-section .card-image {
-    background: #1a5276;
-}
-
-#outsider-section .card-image {
-    background: #27ae60;
-}
-
-#minion-section .card-image {
-    background: #c0392b;
-}
-
-#demon-section .card-image {
-    background: #8e44ad;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4a5568;
 }
 
 footer {
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     padding: 1.5rem;
-    border-top: 1px solid #eee;
     font-size: 0.9rem;
-    color: #666;
+    color: #718096;
 }
 
-@media print {
-    /* Print styles remain similar */
-    .sidebar, .btn, .logo i, footer {
-        display: none;
-    }
-    
-    .main-content {
-        margin-left: 0;
-        padding: 0;
-    }
-    
-    .script-container {
-        box-shadow: none;
-        border: none;
-        padding: 0;
-    }
-}
-
-/* Responsive */
 @media (max-width: 900px) {
-    .team-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .team-roles {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
@@ -300,24 +273,44 @@ footer {
     
     header {
         left: 280px;
-        padding: 1rem;
+        padding: 1rem 1.5rem;
     }
     
     .logo h1 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+    }
+    
+    .main-content {
+        padding-top: 80px;
     }
     
     .btn span {
         display: none;
     }
     
-    .btn {
-        padding: 8px;
+    .btn i {
+        font-size: 1.3rem;
     }
 }
 
 @media (max-width: 600px) {
     .team-roles {
         grid-template-columns: 1fr;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .logo {
+        justify-content: center;
+    }
+    
+    .controls {
+        width: 100%;
+        justify-content: center;
     }
 }

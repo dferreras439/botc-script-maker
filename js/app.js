@@ -3,14 +3,43 @@ const roleJsonTextarea = document.getElementById('role-json');
 const generateBtn = document.getElementById('generate-btn');
 const printBtn = document.getElementById('print-btn');
 const saveBtn = document.getElementById('save-btn');
+const scriptNameEl = document.getElementById('script-name');
+const scriptAuthorEl = document.getElementById('script-author');
 
-// Team containers
+// Team container elements
 const townsfolkRoles = document.getElementById('townsfolk-roles');
 const outsiderRoles = document.getElementById('outsider-roles');
 const minionRoles = document.getElementById('minion-roles');
 const demonRoles = document.getElementById('demon-roles');
 
-// Fetch role data
+// Simple role icons (first letter fallback)
+const roleIcons = {
+    washerwoman: "👚",
+    librarian: "📚",
+    investigator: "🔍",
+    chef: "👨‍🍳",
+    empath: "💖",
+    fortuneteller: "🔮",
+    fortune_teller: "🔮",
+    undertaker: "⚰️",
+    monk: "🧘",
+    slayer: "🏹",
+    soldier: "🛡️",
+    ravenkeeper: "🐦",
+    mayor: "🎖️",
+    virgin: "💃",
+    butler: "🧑‍🍳",
+    drunk: "🍺",
+    recluse: "🏚️",
+    saint: "😇",
+    poisoner: "🧪",
+    spy: "🕵️",
+    scarletwoman: "💃",
+    baron: "🎩",
+    imp: "😈"
+};
+
+// Fetch role data from JSON file
 async function loadRoleDatabase() {
     try {
         const response = await fetch('roles/roles.json');
@@ -35,101 +64,62 @@ async function generateRoleCards() {
         minionRoles.innerHTML = '';
         demonRoles.innerHTML = '';
         
-        // Parse JSON input and load database
+        // Parse JSON input
         const roleConfig = JSON.parse(roleJsonTextarea.value);
+        
+        // Extract metadata
+        let meta = {};
+        const roleIds = [...roleConfig]; // create a copy
+        const metaIndex = roleIds.findIndex(item => item.id === "_meta");
+        
+        if (metaIndex !== -1) {
+            meta = roleIds.splice(metaIndex, 1)[0];
+        }
+        
+        // Update script header
+        scriptNameEl.textContent = meta.name || "Custom Script";
+        scriptAuthorEl.textContent = meta.author ? `by ${meta.author}` : "A custom script for Blood on the Clocktower";
+        
+        // Load role database
         const roleDatabase = await loadRoleDatabase();
         
-        const teamCounts = {
-            townsfolk: 0,
-            outsider: 0,
-            minion: 0,
-            demon: 0
-        };
-        
-        const placeholderTexts = {
-            townsfolk: "Townsfolk placeholders are used when additional roles are needed",
-            outsider: "Outsider placeholders for additional roles",
-            minion: "Minion placeholders fill empty spots",
-            demon: "Demon placeholders complete the team"
-        };
-        
-        // Create cards for each role
-        roleConfig.forEach(roleConfig => {
-            const roleId = roleConfig.id;
-            const role = roleDatabase[roleId];
-            const team = role ? role.team : 'unknown';
+        // Process role IDs
+        roleIds.forEach(roleId => {
+            // Handle both string and object formats
+            const id = typeof roleId === 'string' ? roleId : roleId.id;
+            const role = roleDatabase[id];
+            const team = role ? role.team : null;
             
-            // Track team counts
-            if (teamCounts.hasOwnProperty(team)) {
-                teamCounts[team]++;
-            }
-            
-            let cardContent = '';
+            // Get the team container
+            const container = getTeamContainer(team);
             
             if (role) {
-                cardContent = `
-                    <div class="card-image">${roleIcons[roleId] || role.name.charAt(0)}</div>
+                const roleCard = document.createElement('div');
+                roleCard.className = 'role-card';
+                
+                roleCard.innerHTML = `
+                    <div class="card-image">
+                        ${roleIcons[id] || role.name.charAt(0).toUpperCase()}
+                    </div>
                     <div class="card-content">
                         <div class="role-name">${role.name}</div>
                         <div class="role-ability">${role.ability}</div>
                     </div>
                 `;
+                
+                container.appendChild(roleCard);
             } else {
-                cardContent = `
+                const errorCard = document.createElement('div');
+                errorCard.className = 'role-card';
+                errorCard.innerHTML = `
                     <div class="card-image">❓</div>
                     <div class="card-content">
-                        <div class="role-name">Unknown: ${roleId}</div>
-                        <div class="role-ability">Role not found in database</div>
+                        <div class="role-name">Unknown Role</div>
+                        <div class="role-ability">Role ID not found in database: ${id}</div>
                     </div>
                 `;
-            }
-            
-            // Create and append card based on team
-            const roleCard = document.createElement('div');
-            roleCard.className = 'role-card';
-            roleCard.innerHTML = cardContent;
-            
-            switch(team) {
-                case 'townsfolk':
-                    townsfolkRoles.appendChild(roleCard);
-                    break;
-                case 'outsider':
-                    outsiderRoles.appendChild(roleCard);
-                    break;
-                case 'minion':
-                    minionRoles.appendChild(roleCard);
-                    break;
-                case 'demon':
-                    demonRoles.appendChild(roleCard);
-                    break;
-                default:
-                    // Add to townsfolk as a fallback
-                    townsfolkRoles.appendChild(roleCard);
-            }
-        });
-        
-        // Add placeholders to teams with fewer roles
-        const MIN_ROLES_PER_TEAM = 4;
-        
-        Object.entries(teamCounts).forEach(([team, count]) => {
-            if (count < MIN_ROLES_PER_TEAM) {
-                const container = getTeamContainer(team);
-                const needed = MIN_ROLES_PER_TEAM - count;
                 
-                for (let i = 0; i < needed; i++) {
-                    const placeholder = document.createElement('div');
-                    placeholder.className = 'role-card placeholder';
-                    
-                    placeholder.innerHTML = `
-                        <div class="card-image">${team.charAt(0).toUpperCase()}</div>
-                        <div class="card-content">
-                            <div class="role-name">${team.charAt(0).toUpperCase() + team.slice(1)} Placeholder</div>
-                            <div class="role-ability">${placeholderTexts[team]}</div>
-                        </div>
-                    `;
-                    
-                    container.appendChild(placeholder);
-                }
+                townsfolkRoles.appendChild(errorCard);
             }
         });
     } catch (error) {
@@ -145,35 +135,9 @@ function getTeamContainer(team) {
         case 'outsider': return outsiderRoles;
         case 'minion': return minionRoles;
         case 'demon': return demonRoles;
-        default: return townsfolkRoles; // default fallback
+        default: return townsfolkRoles;
     }
 }
-
-// Icon mapping (simpler version used only as fallback in placeholders)
-const roleIcons = {
-    washerwoman: "👚",
-    librarian: "📚",
-    investigator: "🔍",
-    chef: "👨‍🍳",
-    empath: "💖",
-    fortune_teller: "🔮",
-    undertaker: "⚰️",
-    monk: "🧘",
-    ravenkeeper: "🐦",
-    virgin: "💃",
-    slayer: "🏹",
-    soldier: "🪖",
-    mayor: "🎖️",
-    butler: "🧑‍🍳",
-    drunk: "🍺",
-    recluse: "🏚️",
-    saint: "😇",
-    poisoner: "🧪",
-    spy: "🕵️",
-    scarlet_woman: "💃",
-    baron: "🎩",
-    imp: "😈"
-};
 
 // Event Listeners
 generateBtn.addEventListener('click', generateRoleCards);
