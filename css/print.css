@@ -1,0 +1,8 @@
+@media print {
+  .sidebar, #print-btn { 
+    display: none; /* Hide non-print elements */
+  }
+  .script-area {
+    width: 100%; /* Full page */
+  }
+}
