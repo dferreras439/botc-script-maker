@@ -1,16 +1,16 @@
-/* components.css */
+/* components.css - Structural Layout Testing Only */
+
 .sidebar-title {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
+    /* Removed border for minimalist view */
 }
 
 .sidebar-title h2 {
     font-size: 1.3rem;
-    color: #333;
     font-weight: 600;
 }
 
@@ -22,41 +22,32 @@
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #444;
 }
 
 .input-group textarea {
     width: 100%;
     height: 180px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: none; /* Removed border */
+    border-radius: 0; /* Removed border-radius for cleaner structure view */
     padding: 15px;
     font-family: monospace;
     font-size: 0.9rem;
     resize: vertical;
-    background: #fff;
-    color: #333;
 }
 
 .btn {
-    background: #4a6fa5;
-    color: white;
-    border: none;
+    border: none; /* Removed border */
     padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 0; /* Removed border-radius */
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: background 0.2s ease;
     width: 100%;
     justify-content: center;
     margin-top: 10px;
-}
-
-.btn:hover {
-    background: #3a5a85;
+    /* Removed background/color/transition */
 }
 
 .btn i {
@@ -66,14 +57,14 @@
 .instructions {
     margin-top: 1.5rem;
     padding: 15px;
-    border-radius: 6px;
-    background: #f0f7ff;
+    border: none; /* Removed border */
+    border-radius: 0; /* Removed border-radius */
     font-size: 0.9rem;
+    /* Removed background/color */
 }
 
 .instructions h3 {
     margin-bottom: 10px;
-    color: #2c5282;
 }
 
 .instructions ul {
@@ -83,7 +74,6 @@
 .instructions li {
     margin-bottom: 6px;
     line-height: 1.5;
-    color: #4a5568;
 }
 
 .logo {
@@ -94,7 +84,6 @@
 
 .logo h1 {
     font-size: 1.5rem;
-    color: #2d3748;
     font-weight: 600;
 }
 
@@ -105,9 +94,9 @@
 
 .script-container {
     padding: 1.5rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: none; /* Removed border */
+    border-radius: 0; /* Removed border-radius */
+    /* Removed box-shadow */
 }
 
 .script-header {
@@ -117,16 +106,36 @@
 }
 
 .script-header h2 {
-    font-size: 2rem;
+    font-size: 4rem;
     margin-bottom: 0.25rem;
-    color: #2b6cb0;
+
+    /* --- New Gothic Font and Marine Blue Radial Gradient --- */
+    font-family: 'UnifrakturMaguntia', serif; /* Apply the gothic font, with serif as fallback */
+    
+    /* Define the radial gradient */
+    background: radial-gradient(circle at right, 
+                rgb(68, 114, 196) 0%,     /* Lighter marine blue center */
+                rgb(20, 60, 120) 100%    /* Darker marine blue edges */
+               );
+    
+    /* Make the text transparent so the background shows through */
+    color: transparent; 
+    
+    /* Clip the background to the shape of the text */
+    -webkit-background-clip: text; /* For Safari/older Chrome */
+    background-clip: text;
+    
+    /* Ensure no text shadow interferes if it's there */
+    text-shadow: none; 
+    /* ---------------------------------------------------- */
 }
 
 .script-header p {
     font-size: 1.1rem;
-    color: #4a5568;
+    /* Removed color */
     max-width: 600px;
     margin: 0 auto;
+    
 }
 
 .team-grid {
@@ -136,54 +145,51 @@
 }
 
 .team-section {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-gap: 20px;            /* space between title & roles */
+  align-items: start;        /* top-align both items */
 }
 
 .team-title {
-    font-size: 1.5rem;
-    padding: 15px 20px;
-    background: #edf2f7;
-    color: #2d3748;
-    font-weight: 600;
-    margin: 0;
+  writing-mode: vertical-lr;
+  transform:scale(-1);
+  /* maybe flip it: transform: rotate(180deg); */
+  padding: 0 10px;
 }
 
 .team-roles {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 15px;
-    padding: 15px;
+  /* by default it goes in column 2, row 1 */
+  display: grid;             
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 15px;
+  padding: 15px;
 }
+
 
 .role-card {
     display: flex;
     padding: 15px;
-    background: #f9fafb;
-    border-radius: 6px;
+    border: none; /* Removed border */
+    border-radius: 0; /* Removed border-radius */
     gap: 15px;
-    transition: all 0.2s ease;
+    /* Removed background/transition */
 }
 
-.role-card:hover {
-    background: #f0f7ff;
-}
+/* Removed role-card:hover */
 
 .card-image {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, #4a6fa5 0%, #2c5282 100%);
+    border: none; /* Removed border */
     flex-shrink: 0;
-    border-radius: 6px;
+    border-radius: 0; /* Removed border-radius */
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-weight: bold;
     font-size: 1.2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* Removed background/color/box-shadow */
 }
 
 .card-content {
@@ -194,11 +200,11 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #2b6cb0;
+    /* Removed color */
 }
 
 .role-ability {
     font-size: 0.95rem;
     line-height: 1.5;
-    color: #4a5568;
+    /* Removed color */
 }

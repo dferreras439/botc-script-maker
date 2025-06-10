@@ -1,15 +1,17 @@
 /* base.css */
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap'); /* Gothic font import */
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn&display=swap'); /* Gothic font import */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Vollkorn, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
-    background: #f8f9fa;
     color: #333;
 }
