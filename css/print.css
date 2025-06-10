@@ -96,3 +96,42 @@
         font-size: 1rem !important;
     }
 }
+
+
+/* media-queries.css */
+
+@media print {
+  /*  Kill any UA or author borders on fieldsets */
+  fieldset,
+  fieldset > legend {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /*  …and on any custom grid/container you used: */
+  .main-content-background-area,
+  .team-grid,
+  .script-container {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+@media print {
+  /* If you have this, it forces a break after the header container: */
+  .main-content {
+    page-break-after: auto !important;
+    /* or just remove that rule entirely */
+  }
+
+  /* This keeps the large grid from getting pushed to page 2: */
+  .script-container,
+  .team-grid {
+    /* allow it to split naturally across pages */
+    page-break-inside: auto !important;
+    break-inside: auto !important;      /* for modern browsers */
+  }
+}
+
