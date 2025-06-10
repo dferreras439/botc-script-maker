@@ -470,140 +470,30 @@
     </div>
     
     <script>
-        // Role database
-        const roleDatabase = {
-            washerwoman: {
-                name: "Washerwoman",
-                type: "townsfolk",
-                ability: "You start knowing that 1 of 2 players is a particular Townsfolk.",
-                icon: "👚"
-            },
-            librarian: {
-                name: "Librarian",
-                type: "townsfolk",
-                ability: "You start knowing that 1 of 2 players is a particular Outsider.",
-                icon: "📚"
-            },
-            investigator: {
-                name: "Investigator",
-                type: "townsfolk",
-                ability: "You start knowing that 1 of 2 players is a particular Minion.",
-                icon: "🔍"
-            },
-            chef: {
-                name: "Chef",
-                type: "townsfolk",
-                ability: "You start knowing how many pairs of evil players are sitting adjacent to each other.",
-                icon: "👨‍🍳"
-            },
-            empath: {
-                name: "Empath",
-                type: "townsfolk",
-                ability: "Each night, you learn how many of your 2 alive neighbors are evil.",
-                icon: "💖"
-            },
-            fortune_teller: {
-                name: "Fortune Teller",
-                type: "townsfolk",
-                ability: "Each night, choose 2 players: you learn if either is a Demon. There is a good player that registers as a Demon to you.",
-                icon: "🔮"
-            },
-            undertaker: {
-                name: "Undertaker",
-                type: "townsfolk",
-                ability: "Each night*, you learn which character died by execution today.",
-                icon: "⚰️"
-            },
-            monk: {
-                name: "Monk",
-                type: "townsfolk",
-                ability: "Each night*, choose a player (not yourself): they are safe from the Demon tonight.",
-                icon: "🧘"
-            },
-            ravenkeeper: {
-                name: "Ravenkeeper",
-                type: "townsfolk",
-                ability: "If you die at night, you are woken to choose a player: you learn their character.",
-                icon: "🐦"
-            },
-            virgin: {
-                name: "Virgin",
-                type: "townsfolk",
-                ability: "The 1st time you are nominated, if the nominator is a Townsfolk, they are executed immediately.",
-                icon: "💃"
-            },
-            slayer: {
-                name: "Slayer",
-                type: "townsfolk",
-                ability: "Once per game, during the day, publicly choose a player: if they are the Demon, they die.",
-                icon: "🏹"
-            },
-            soldier: {
-                name: "Soldier",
-                type: "townsfolk",
-                ability: "You are safe from the Demon.",
-                icon: "🪖"
-            },
-            mayor: {
-                name: "Mayor",
-                type: "townsfolk",
-                ability: "If only 3 players live & no execution occurs, your team wins. If you die at night, 1 player might die instead.",
-                icon: "🎖️"
-            },
-            butler: {
-                name: "Butler",
-                type: "outsider",
-                ability: "Each night, choose a player (not yourself): tomorrow, you may only vote if they are voting.",
-                icon: "🧑‍🍳"
-            },
-            drunk: {
-                name: "Drunk",
-                type: "outsider",
-                ability: "You think you are a Townsfolk, but you are not. You do not know this, and your ability malfunctions.",
-                icon: "🍺"
-            },
-            recluse: {
-                name: "Recluse",
-                type: "outsider",
-                ability: "You might register as evil & as a Minion or Demon, even if dead.",
-                icon: "🏚️"
-            },
-            saint: {
-                name: "Saint",
-                type: "outsider",
-                ability: "If you die by execution, evil wins.",
-                icon: "😇"
-            },
-            poisoner: {
-                name: "Poisoner",
-                type: "minion",
-                ability: "Each night, choose a player: they are poisoned tonight and tomorrow day.",
-                icon: "🧪"
-            },
-            spy: {
-                name: "Spy",
-                type: "minion",
-                ability: "Each night, you see the Grimoire. You might register as good & as a Townsfolk or Outsider, even if dead.",
-                icon: "🕵️"
-            },
-            scarlet_woman: {
-                name: "Scarlet Woman",
-                type: "minion",
-                ability: "If there are 5 or more players alive and the Demon dies, you become the Demon.",
-                icon: "💃"
-            },
-            baron: {
-                name: "Baron",
-                type: "minion",
-                ability: "There are extra Outsiders in play. [-1 or +2 Outsiders]",
-                icon: "🎩"
-            },
-            imp: {
-                name: "Imp",
-                type: "demon",
-                ability: "Each night*, choose a player: they die. If you kill yourself, a Minion becomes the Imp.",
-                icon: "😈"
-            }
+        // Icon mapping remains the same as hardcoded version
+        const roleIcons = {
+            washerwoman: "👚",
+            librarian: "📚",
+            investigator: "🔍",
+            chef: "👨‍🍳",
+            empath: "💖",
+            fortune_teller: "🔮",
+            undertaker: "⚰️",
+            monk: "🧘",
+            ravenkeeper: "🐦",
+            virgin: "💃",
+            slayer: "🏹",
+            soldier: "🪖",
+            mayor: "🎖️",
+            butler: "🧑‍🍳",
+            drunk: "🍺",
+            recluse: "🏚️",
+            saint: "😇",
+            poisoner: "🧪",
+            spy: "🕵️",
+            scarlet_woman: "💃",
+            baron: "🎩",
+            imp: "😈"
         };
         
         // DOM Elements
@@ -613,19 +503,41 @@
         const saveBtn = document.getElementById('save-btn');
         const rolesGrid = document.getElementById('roles-grid');
         
+        // Fetch role data from JSON file
+        async function loadRoleData() {
+            try {
+                const response = await fetch('roles/roles.json');
+                const roles = await response.json();
+                
+                // Convert array into lookup dictionary
+                return roles.reduce((map, role) => {
+                    map[role.id] = {
+                        ...role,
+                        type: role.team  // Map "team" to "type" for compatibility
+                    };
+                    return map;
+                }, {});
+            } catch (error) {
+                console.error('Error loading role data:', error);
+                return {};
+            }
+        }
+        
         // Generate role cards
-        function generateRoleCards() {
+        async function generateRoleCards() {
             try {
                 // Clear existing cards
                 rolesGrid.innerHTML = '';
                 
                 // Parse JSON input
                 const roleConfig = JSON.parse(roleJsonTextarea.value);
+                const roleDatabase = await loadRoleData();
                 
                 // Create cards for each role
                 roleConfig.forEach(roleConfig => {
                     const roleId = roleConfig.id;
                     const role = roleDatabase[roleId];
+                    const icon = roleIcons[roleId] || "❓";
                     
                     if (role) {
                         const roleCard = document.createElement('div');
@@ -637,10 +549,23 @@
                                 <div class="role-type ${role.type}">${role.type.charAt(0).toUpperCase() + role.type.slice(1)}</div>
                             </div>
                             <div class="role-ability">${role.ability}</div>
-                            <div class="role-icon">${role.icon}</div>
+                            <div class="role-icon">${icon}</div>
                         `;
                         
                         rolesGrid.appendChild(roleCard);
+                    } else {
+                        // Fallback for unknown roles
+                        const errorCard = document.createElement('div');
+                        errorCard.className = 'role-card';
+                        errorCard.innerHTML = `
+                            <div class="role-header">
+                                <div class="role-name">Error: ${roleId}</div>
+                                <div class="role-type">Unknown</div>
+                            </div>
+                            <div class="role-ability">Role not found in database</div>
+                            <div class="role-icon">❌</div>
+                        `;
+                        rolesGrid.appendChild(errorCard);
                     }
                 });
                 
