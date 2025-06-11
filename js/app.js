@@ -124,7 +124,7 @@ function createRoleCard(id, role) {
     
     // Try to load specialized version (TF format first)
     const nameForImage = role?.name?.replace(/'/g, '') || '';
-    img.src = `img/Icon_${nameForImage}.png`;
+    // img.src = `img/Icon_${nameForImage}.png`; // id better
     
     // Fallback to ID-based image if name-based image fails
     img.onerror = function() {
