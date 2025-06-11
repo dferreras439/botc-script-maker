@@ -95,9 +95,14 @@
         margin-bottom: 0px
     }
     .card-image {
-        width: 50px !important; /* Smaller images for print */
-        height: 50px !important;
+        width: 65px !important; /* Smaller images for print */
+        height: 65px !important;
         font-size: 0 !important;
     }
 }
-
+@media print {
+  /* this selector (the star) now lives inside the media block */
+  * {
+    font-size: 75%;
+  }
+}
