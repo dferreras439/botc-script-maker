@@ -235,3 +235,16 @@
     left: 0;
 }
 
+table.botc-break{
+  border-collapse: collapse;
+  margin: 1rem auto;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+.botc-break caption{ font-weight:700; margin-bottom:.3rem; }
+
+.botc-break th,
+.botc-break td{ padding:.35rem .6rem; }
+
+.blue{ color:#0054ff; }
+.red { color:#d70000; }
