@@ -109,3 +109,20 @@
       padding: 0;
   }
 }
+
+@media print {
+    .page-break {
+        /* Old, widely-supported syntax */
+        page-break-before: always;
+
+        /* Newer, standards-based syntax (supported in every modern browser) */
+        break-before: page;
+    }
+        /* --- EXCEPTIONS for the BoTC table -------------------------- */
+    .botc-break .blue {            /* restore blue numbers */
+        color: #0054ff !important;
+    }
+    .botc-break .red  {            /* restore red numbers */
+        color: #d70000 !important;
+    }
+}
