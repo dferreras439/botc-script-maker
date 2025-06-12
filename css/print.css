@@ -111,7 +111,7 @@
 }
 
 @media print {
-    .page-break {
+    .botc-break {
         /* Old, widely-supported syntax */
         page-break-before: always;
 
